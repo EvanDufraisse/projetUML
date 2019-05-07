@@ -16,10 +16,11 @@ import java.util.Set;
 
 public class Database {
 	
+	static String PATH = "/home/evan/Dev/Java/Eclipse/Workspaces_school/Workspace_QualiLogiciel/projetUML/src/database/";
 	
-	public ArrayList<Integer> databaseLoadId(String path) {
+	public static ArrayList<Integer> databaseLoadId(String path) {
 		ArrayList<Integer> data = new ArrayList<Integer>();
-    	File file = new File("./database/"+path+".txt");
+    	File file = new File(PATH+path+".txt");
     	BufferedReader reader = null;
 
     	try {
@@ -44,10 +45,10 @@ public class Database {
     	return data;
     }
 	
-	public HashMap<Integer, Personne> databaseLoadPersonnes(String path) {
+	public static HashMap<Integer, Personne> databaseLoadPersonnes(String path) {
 
 		HashMap<Integer,Personne> M = new HashMap<Integer, Personne>();
-    	File file = new File("./database/"+path+".txt");
+    	File file = new File(PATH+"personnes.txt");
     	BufferedReader reader = null;
 
     	try {
@@ -58,9 +59,9 @@ public class Database {
     	    	String[] parts = text.split(";");
     	    	String[] values = new String[4];
     	    	for(int i=0; i<4;i++) {
-    	    		values[i] = parts[i+1];
+    	    		values[i] = parts[i];
     	    	}
-    	    	M.put(Integer.parseInt(values[3]), new Personne(values[0],values[1],values[2],Integer.parseInt(values[3])));
+    	    	M.put(Integer.parseInt(values[0]), new Personne(values[1],values[2],values[3],Integer.parseInt(values[0])));
     	    }
     	} catch (FileNotFoundException e) {
     	    e.printStackTrace();
@@ -77,10 +78,10 @@ public class Database {
     	return M;
     }
 	
-	public HashMap<Integer, Auteur> databaseLoadAuteurs(String path, HashMap<Integer,Personne> data) {
+	public static HashMap<Integer, Auteur> databaseLoadAuteurs(String path, HashMap<Integer,Personne> data) {
 
 		HashMap<Integer, Auteur> M = new HashMap<Integer, Auteur>();
-    	File file = new File("./database/"+path+".txt");
+    	File file = new File(PATH+"auteurs.txt");
     	BufferedReader reader = null;
 
     	try {
@@ -112,10 +113,10 @@ public class Database {
     	return M;
     }
 	
-	public HashMap<Integer, Correcteur> databaseLoadCorrecteurs(String path, HashMap<Integer,Personne> data, HashMap<Integer,Oeuvre>  dataOeuvres) {
+	public static HashMap<Integer, Correcteur> databaseLoadCorrecteurs(String path, HashMap<Integer,Personne> data, HashMap<Integer,Oeuvre>  dataOeuvres) {
 
 		HashMap<Integer, Correcteur> M = new HashMap<Integer, Correcteur>();
-    	File file = new File("./database/"+path+".txt");
+    	File file = new File(PATH+"correcteurs.txt");
     	BufferedReader reader = null;
 
     	try {
@@ -152,10 +153,10 @@ public class Database {
     	return M;
     }
 	
-	public HashMap<Integer, Critique> databaseLoadCritiques(String path, HashMap<Integer,Personne> data) {
+	public static HashMap<Integer, Critique> databaseLoadCritiques(String path, HashMap<Integer,Personne> data) {
 
 		HashMap<Integer, Critique> M = new HashMap<Integer, Critique>();
-    	File file = new File("./database/"+path+".txt");
+    	File file = new File(PATH+"critiques.txt");
     	BufferedReader reader = null;
 
     	try {
@@ -195,29 +196,29 @@ public class Database {
     	return M;
     }
 	
-	public void savePersonne(HashMap<String, Personne> M, String pathName) throws FileNotFoundException, UnsupportedEncodingException{
+	public void savePersonne(HashMap<Integer, Personne> M, String pathName) throws FileNotFoundException, UnsupportedEncodingException{
 		
-		PrintWriter writer = new PrintWriter("./database/"+pathName+".txt", "UTF-8");
-		Set<String> s = M.keySet();
-		Iterator<String> It = s.iterator();
+		PrintWriter writer = new PrintWriter(PATH+"personnes.txt", "UTF-8");
+		Set<Integer> s = M.keySet();
+		Iterator<Integer> It = s.iterator();
 		while(It.hasNext()) {
-			String currentKey = It.next();
+			Integer currentKey = It.next();
 			Personne p = M.get(currentKey);
-			String str = currentKey;
+			String str = ""+currentKey;
 			str += ";"+p.getName()+";"+p.getPrenom()+";"+p.getAdresse();
 			writer.println(str);
 		}
 		writer.close();}
 	
-public void saveAuteurs(HashMap<String, Auteur> M, String pathName) throws FileNotFoundException, UnsupportedEncodingException{
+public void saveAuteurs(HashMap<Integer, Auteur> M, String pathName) throws FileNotFoundException, UnsupportedEncodingException{
 		
-		PrintWriter writer = new PrintWriter("./database/"+pathName+".txt", "UTF-8");
-		Set<String> s = M.keySet();
-		Iterator<String> It = s.iterator();
+		PrintWriter writer = new PrintWriter(PATH+"auteurs.txt", "UTF-8");
+		Set<Integer> s = M.keySet();
+		Iterator<Integer> It = s.iterator();
 		while(It.hasNext()) {
-			String currentKey = It.next();
+			Integer currentKey = It.next();
 			Auteur c = M.get(currentKey);
-			String str = currentKey;
+			String str = ""+currentKey;
 			String[] domaines = new String[c.getDomaines().size()];
 			domaines = c.getDomaines().toArray(domaines);
 			str += ";"+Arrays.toString(domaines);
@@ -226,15 +227,15 @@ public void saveAuteurs(HashMap<String, Auteur> M, String pathName) throws FileN
 		writer.close();}
 	
 	
-public void saveCritique(HashMap<String, Critique> M, String pathName) throws FileNotFoundException, UnsupportedEncodingException{
+public void saveCritique(HashMap<Integer, Critique> M, String pathName) throws FileNotFoundException, UnsupportedEncodingException{
 		
-		PrintWriter writer = new PrintWriter("./database/"+pathName+".txt", "UTF-8");
-		Set<String> s = M.keySet();
-		Iterator<String> It = s.iterator();
+		PrintWriter writer = new PrintWriter(PATH+"critiques.txt", "UTF-8");
+		Set<Integer> s = M.keySet();
+		Iterator<Integer> It = s.iterator();
 		while(It.hasNext()) {
-			String currentKey = It.next();
+			Integer currentKey = It.next();
 			Critique c = M.get(currentKey);
-			String str = currentKey;
+			String str = ""+currentKey;
 			Integer[] ref = new Integer[c.getRef().size()];
 			ref = c.getRef().toArray(ref);
 			String[] domaines = new String[c.getDomaines().size()];
@@ -244,29 +245,65 @@ public void saveCritique(HashMap<String, Critique> M, String pathName) throws Fi
 		}
 		writer.close();}
 	
-public void saveCorrecteur(HashMap<String, Correcteur> M, String pathName) throws FileNotFoundException, UnsupportedEncodingException{
+public void saveCorrecteur(HashMap<Integer, Correcteur> M, String pathName) throws FileNotFoundException, UnsupportedEncodingException{
 	
-	PrintWriter writer = new PrintWriter("./database/"+pathName+".txt", "UTF-8");
-	Set<String> s = M.keySet();
-	Iterator<String> It = s.iterator();
+	PrintWriter writer = new PrintWriter(PATH+"correcteurs.txt", "UTF-8");
+	Set<Integer> s = M.keySet();
+	Iterator<Integer> It = s.iterator();
 	while(It.hasNext()) {
-		String currentKey = It.next();
+		Integer currentKey = It.next();
 		Correcteur c = M.get(currentKey);
 		ArrayList<Oeuvre> L = c.getOeuvres();
 		long[] refOeuvres = new long[L.size()];
 		for(int i=0; i<L.size();i++) {
 			refOeuvres[i] = L.get(i).reference;
 		}
-		String str = currentKey;
+		String str = ""+currentKey;
 
 		str += ";"+Arrays.toString(refOeuvres);
 		writer.println(str);
 	}
 	writer.close();}	
 	
+
+public static void testSaveDatabase() throws FileNotFoundException, UnsupportedEncodingException {
+	HashMap<Integer,Personne> DataPersonne = new HashMap<Integer, Personne>();
+	HashMap<Integer, Auteur> DataAuteurs = new HashMap<Integer, Auteur>();
+	HashMap<Integer, Personne> DataCorrecteurs = new HashMap<Integer, Personne>();
+	HashMap<Integer, Critique> DataCritique = new HashMap<Integer, Critique>();
+	ArrayList<Integer> DataIdOeuvre = new ArrayList<Integer>();
+	ArrayList<Integer> DataIdPersonne = new ArrayList<Integer>();
+	HashMap<Long, Oeuvre> DataOeuvre = new HashMap<Long, Oeuvre>();
+	Personne p1 = new Personne("Dufraisse","Evan","Nantes",1);
+	Personne p2 = new Personne("Cheneau", "Florent", "Nantes",2);
+	Personne p3 = new Personne("Friedel", "Paul", "Brest",3);
+	Auteur a1 = new Auteur(new ArrayList<String>(Arrays.asList(new String[]{"Physique","Géopolitique"})),p1);
+	Critique c1 = new Critique(new ArrayList<String>(Arrays.asList(new String[]{"Mathématiques","Astrologie"})), p2);
+	Oeuvre o1 = new Oeuvre_collective(1,"Tutos faciles","url:deihzfiehofhao");
+	Correcteur c2 = new Correcteur(new ArrayList<Oeuvre>(Arrays.asList(new Oeuvre[]{o1})),p3);
+	DataPersonne.put(p1.getId(), p1);
+	DataPersonne.put(p2.getId(), p2);
+	DataPersonne.put(p3.getId(), p3);
+	Database d = new Database();
+	d.savePersonne(DataPersonne, "personnes");
 	
+
+}
+public static void testRetrieveDatabase() {
+	HashMap<Integer, Personne> M;
+	M = databaseLoadPersonnes("personnes");
+	Set<Integer> s = M.keySet();
+	Iterator<Integer> it  = s.iterator();
+	while(it.hasNext()) {
+		int key = it.next();
+		System.out.println(M.get(key).getPrenom()+" "+M.get(key).getName());
+	}
 	
-public static void main(String[] args) {
+}
+	
+public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
+	testSaveDatabase();
+	testRetrieveDatabase();
 	
 }
 
