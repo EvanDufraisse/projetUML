@@ -32,4 +32,8 @@ public class Critique{
 	public void addDomaine(String dom) {
 		this.getDomaines().add(dom);
 	}
+	public ArrayList<Integer> getRef() {
+		return ref;
+	}
+	
 }

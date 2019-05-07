@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -15,12 +16,6 @@ import java.util.Set;
 
 public class Database {
 	
-	ArrayList<Integer> DataIdOeuvre;
-	ArrayList<Integer> DataIdPersonne;
-	HashMap<String, Personne> DataCritique;
-	HashMap<String, Personne> DataAuteurs;
-	HashMap<String, Personne> DataCorrecteurs;
-	HashMap<String,Oeuvre> DataOeuvre;
 	
 	public ArrayList<Integer> databaseLoadId(String path) {
 		ArrayList<Integer> data = new ArrayList<Integer>();
@@ -209,10 +204,27 @@ public class Database {
 			String currentKey = It.next();
 			Personne p = M.get(currentKey);
 			String str = currentKey;
-			str += ";"+p.getName()+";"+p.getPrenom()+";"+p.getAdresse()+";";
+			str += ";"+p.getName()+";"+p.getPrenom()+";"+p.getAdresse();
 			writer.println(str);
 		}
 		writer.close();}
+	
+public void saveAuteurs(HashMap<String, Auteur> M, String pathName) throws FileNotFoundException, UnsupportedEncodingException{
+		
+		PrintWriter writer = new PrintWriter("./database/"+pathName+".txt", "UTF-8");
+		Set<String> s = M.keySet();
+		Iterator<String> It = s.iterator();
+		while(It.hasNext()) {
+			String currentKey = It.next();
+			Auteur c = M.get(currentKey);
+			String str = currentKey;
+			String[] domaines = new String[c.getDomaines().size()];
+			domaines = c.getDomaines().toArray(domaines);
+			str += ";"+Arrays.toString(domaines);
+			writer.println(str);
+		}
+		writer.close();}
+	
 	
 public void saveCritique(HashMap<String, Critique> M, String pathName) throws FileNotFoundException, UnsupportedEncodingException{
 		
@@ -223,12 +235,34 @@ public void saveCritique(HashMap<String, Critique> M, String pathName) throws Fi
 			String currentKey = It.next();
 			Critique c = M.get(currentKey);
 			String str = currentKey;
-			str += ";"+c.getDomaines()+";"++";"+p.getAdresse()+";";
+			Integer[] ref = new Integer[c.getRef().size()];
+			ref = c.getRef().toArray(ref);
+			String[] domaines = new String[c.getDomaines().size()];
+			domaines = c.getDomaines().toArray(domaines);
+			str += ";"+Arrays.toString(ref)+";"+ Arrays.toString(domaines);
 			writer.println(str);
 		}
 		writer.close();}
 	
+public void saveCorrecteur(HashMap<String, Correcteur> M, String pathName) throws FileNotFoundException, UnsupportedEncodingException{
 	
+	PrintWriter writer = new PrintWriter("./database/"+pathName+".txt", "UTF-8");
+	Set<String> s = M.keySet();
+	Iterator<String> It = s.iterator();
+	while(It.hasNext()) {
+		String currentKey = It.next();
+		Correcteur c = M.get(currentKey);
+		ArrayList<Oeuvre> L = c.getOeuvres();
+		long[] refOeuvres = new long[L.size()];
+		for(int i=0; i<L.size();i++) {
+			refOeuvres[i] = L.get(i).reference;
+		}
+		String str = currentKey;
+
+		str += ";"+Arrays.toString(refOeuvres);
+		writer.println(str);
+	}
+	writer.close();}	
 	
 	
 	
