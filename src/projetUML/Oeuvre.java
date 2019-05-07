@@ -8,6 +8,7 @@ public abstract class  Oeuvre {
 	String titre;
 	String URL;
 	String type;
+	Correcteur[] correcteurs;
 	ArrayList<String> chapitres;
 	ArrayList<String>  domaines;
 	
@@ -61,7 +62,14 @@ public abstract class  Oeuvre {
 	public long getReference() {
 		return reference;
 	}
-	
+	public Correcteur[] getCorrecteurs() {
+		return correcteurs;
+	}
+
+	public void setCorrecteurs(Correcteur[] correcteurs) {
+		this.correcteurs = correcteurs;
+	}
+
 	
 	
 
