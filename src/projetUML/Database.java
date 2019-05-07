@@ -5,8 +5,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
 
 public class Database {
@@ -196,6 +200,33 @@ public class Database {
     	return M;
     }
 	
+	public void savePersonne(HashMap<String, Personne> M, String pathName) throws FileNotFoundException, UnsupportedEncodingException{
+		
+		PrintWriter writer = new PrintWriter("./database/"+pathName+".txt", "UTF-8");
+		Set<String> s = M.keySet();
+		Iterator<String> It = s.iterator();
+		while(It.hasNext()) {
+			String currentKey = It.next();
+			Personne p = M.get(currentKey);
+			String str = currentKey;
+			str += ";"+p.getName()+";"+p.getPrenom()+";"+p.getAdresse()+";";
+			writer.println(str);
+		}
+		writer.close();}
+	
+public void saveCritique(HashMap<String, Critique> M, String pathName) throws FileNotFoundException, UnsupportedEncodingException{
+		
+		PrintWriter writer = new PrintWriter("./database/"+pathName+".txt", "UTF-8");
+		Set<String> s = M.keySet();
+		Iterator<String> It = s.iterator();
+		while(It.hasNext()) {
+			String currentKey = It.next();
+			Critique c = M.get(currentKey);
+			String str = currentKey;
+			str += ";"+c.getDomaines()+";"++";"+p.getAdresse()+";";
+			writer.println(str);
+		}
+		writer.close();}
 	
 	
 	
