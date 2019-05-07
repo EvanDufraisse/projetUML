@@ -1,6 +1,6 @@
 package projetUML;
 
-public abstract class Personne {
+public class Personne {
 	String name;
 	String prenom;
 	String adresse;

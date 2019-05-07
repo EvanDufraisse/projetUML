@@ -2,15 +2,21 @@ package projetUML;
 
 import java.util.ArrayList;
 
-public class Critique extends Personne{
+public class Critique{
 
 	private ArrayList<String> domaines;
+	private Personne personne;
 	
+	
+	public Critique(ArrayList<String> domaines, Personne personne) {
+		this.domaines = domaines;
+		this.personne = personne;
+	}
 	public Critique(String name, String prenom, String adresse, int id) {
-		super(name, prenom, adresse, id);
+		this.personne = new Personne(name, prenom, adresse, id);
 	}
 	public Critique(String name, String prenom, String adresse, int id, ArrayList<String> domaines) {
-		super(name, prenom, adresse, id);
+		this.personne = new Personne(name, prenom, adresse, id);
 		this.domaines = domaines;
 	}
 	public ArrayList<String> getDomaines() {
