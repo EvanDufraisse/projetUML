@@ -11,6 +11,7 @@ public abstract class  Oeuvre {
 	Correcteur[] correcteurs;
 	ArrayList<String> chapitres;
 	ArrayList<String>  domaines;
+	ArrayList<Critique> critiques;
 	
 	public Oeuvre(long reference, String titre, String uRL) {
 		super();
@@ -69,7 +70,15 @@ public abstract class  Oeuvre {
 	public void setCorrecteurs(Correcteur[] correcteurs) {
 		this.correcteurs = correcteurs;
 	}
-
+	public ArrayList<Critique> getCritiques(){
+		return this.critiques;
+	}
+	public void setCritiques(ArrayList<Critique> critiques) {
+		this.critiques = critiques;
+	}
+	public void addCritique(Critique crit) {
+		this.getCritiques().add(crit);
+	}
 	
 	
 
