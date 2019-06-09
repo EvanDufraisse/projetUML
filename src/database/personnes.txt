@@ -1,0 +1,5 @@
+1;Dufraisse;Evan;Nantes
+2;Cheneau;Florent;Nantes
+3;Friedel;Paul;Brest
+4;Dupont;Paul;3
+5;Varasse;Aymeric;Lille
