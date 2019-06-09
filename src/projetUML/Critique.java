@@ -35,5 +35,7 @@ public class Critique{
 	public ArrayList<Integer> getRef() {
 		return ref;
 	}
-	
+	public Personne getPersonne() {
+		return this.personne;
+	}
 }

@@ -113,7 +113,7 @@ public class Database {
     	return M;
     }
 	
-	public static HashMap<Integer, Correcteur> databaseLoadCorrecteurs(String path, HashMap<Integer,Personne> data, HashMap<Integer,Oeuvre>  dataOeuvres) {
+	public static HashMap<Integer, Correcteur> databaseLoadCorrecteurs(String path, HashMap<Integer,Personne> data, HashMap<Long,Oeuvre>  dataOeuvres) {
 
 		HashMap<Integer, Correcteur> M = new HashMap<Integer, Correcteur>();
     	File file = new File(PATH+"correcteurs.txt");
@@ -265,6 +265,164 @@ public void saveCorrecteur(HashMap<Integer, Correcteur> M, String pathName) thro
 	}
 	writer.close();}	
 	
+public void saveOeuvres(HashMap<Long, Oeuvre> M, String filename) throws FileNotFoundException, UnsupportedEncodingException {
+	Set<Long> s = M.keySet();
+	Iterator<Long> it = s.iterator();
+	while(it.hasNext()) {
+		Long currentkey = it.next();
+		Oeuvre oeuvre = M.get(currentkey);
+		String str = "";
+		if(oeuvre instanceof Oeuvre_collective ) {
+			Oeuvre_collective o = (Oeuvre_collective) oeuvre;
+			str = str +"Collective;"+o.getTitre()+";"+o.getType()+";"+o.getURL()+";";
+			Auteur[] arrayAuteurs = o.getAuteurs().toArray(new Auteur[o.getAuteurs().size()]);
+			Integer[] arrayIdAuteurs = new Integer[o.getAuteurs().size()];
+			for(int k=0; k<o.getAuteurs().size();k++) {
+				arrayIdAuteurs[k] = arrayAuteurs[k].getPersonne().getId();
+			}
+			String[] arrayChapitres = o.getChapitres().toArray(new String[o.getChapitres().size()]);
+			
+			Critique[] arrayCritiques = o.getCritiques().toArray(new Critique[o.getCritiques().size()]);
+			Integer[] arrayIdCritiques = new Integer[o.getCritiques().size()];
+			for(int k=0; k<o.getCritiques().size();k++) {
+				arrayIdCritiques[k] = arrayCritiques[k].getPersonne().getId();
+			}
+			String[] arrayDomaines = o.getDomaines().toArray(new String[o.getDomaines().size()]);
+			String[] arrayResumes = o.getResumes().toArray(new String[o.getResumes().size()]);
+			str = str + Arrays.toString(arrayIdAuteurs)+";"+Arrays.toString(arrayChapitres)+";"+Arrays.toString(arrayIdCritiques)+";"+Arrays.toString(arrayDomaines)+
+					";"+Arrays.toString(arrayResumes)+";"+o.getReference();
+		}
+		else if(oeuvre instanceof Livre) {
+			Livre o = (Livre) oeuvre;
+			str = str +"Livre;"+o.getTitre()+";"+o.getType()+";"+o.getURL()+";"+o.getAuteur().getPersonne().getId()+";";
+			String[] arrayChapitres = o.getChapitres().toArray(new String[o.getChapitres().size()]);
+			Critique[] arrayCritiques = o.getCritiques().toArray(new Critique[o.getCritiques().size()]);
+			Integer[] arrayIdCritiques = new Integer[o.getCritiques().size()];
+			for(int k=0; k<o.getCritiques().size();k++) {
+				arrayIdCritiques[k] = arrayCritiques[k].getPersonne().getId();
+			}
+			String[] arrayDomaines = o.getDomaines().toArray(new String[o.getDomaines().size()]);
+			str+= o.getResume() +";";
+			str = str + Arrays.toString(arrayChapitres)+";"+Arrays.toString(arrayIdCritiques)+";"+Arrays.toString(arrayDomaines)+
+					";"+o.getReference();
+		}
+		PrintWriter writer = new PrintWriter(PATH+"correcteurs.txt", "UTF-8");
+		writer.println(str);
+	}
+}
+
+public static HashMap<Long, Oeuvre> databaseLoadOeuvres(HashMap<Integer,Critique> MapCritiques, HashMap<Integer, Auteur> MapAuteurs) {
+	HashMap<Long, Oeuvre> M = new HashMap<Long, Oeuvre>();
+	File file = new File(PATH+"oeuvres.txt");
+	BufferedReader reader = null;
+
+	try {
+	    reader = new BufferedReader(new FileReader(file));
+	    String text = null;
+
+	    while ((text = reader.readLine()) != null) {
+	    	String[] parts = text.split(";");
+	    	if(parts[0] == "Collective") {
+	    		String titre = parts[1];
+	    		String type = parts[2];
+	    		String url = parts[3];
+	    		ArrayList<Integer> AuteursId = new ArrayList<Integer>();
+	    		parts[4]= parts[4].replace("[", "").replace("]", "");
+   	    	 	String[] Temp = parts[4].split(",");
+   	    	 	for(String s : Temp) {
+   	    	 		AuteursId.add(Integer.parseInt(s));
+   	    	 	}
+	    		ArrayList<String> Chapitres = new ArrayList<String>();
+	    		parts[5]= parts[5].replace("[", "").replace("]", "");
+   	    	 	Temp = parts[5].split(",");
+   	    	 	for(String s : Temp) {
+   	    	 		Chapitres.add(s);
+   	    	 	}
+	    		ArrayList<Integer> CritiquesId = new ArrayList<Integer>();
+	    		parts[5]= parts[5].replace("[", "").replace("]", "");
+   	    	 	Temp = parts[5].split(",");
+   	    	 	for(String s : Temp) {
+   	    	 		CritiquesId.add(Integer.parseInt(s));
+   	    	 	}
+	    		ArrayList<String> Domaines = new ArrayList<String>();
+	    		parts[6]= parts[6].replace("[", "").replace("]", "");
+   	    	 	Temp = parts[6].split(",");
+   	    	 	for(String s : Temp) {
+   	    	 		Domaines.add(s);
+   	    	 	}
+   	    	 	ArrayList<String> Resumes = new ArrayList<String>();
+	    		parts[7]= parts[7].replace("[", "").replace("]", "");
+	    	 	Temp = parts[7].split(",");
+	    	 	for(String s : Temp) {
+	    	 		Resumes.add(s);
+	    	 	}
+   	    	 	Long key = Long.parseLong(parts[8]);
+	    		M.put(key, new Oeuvre_collective(key, titre, url));
+	    		for(long k : CritiquesId ) {
+	    			M.get(key).addCritique(MapCritiques.get(k));
+	    		}
+	    		for(long k : AuteursId) {
+	    			((Oeuvre_collective )M.get(key)).ajouterAuteur(MapAuteurs.get(k));
+	    		}
+	    		M.get(key).setChapitres(Chapitres);
+	    		M.get(key).setDomaines(Domaines);
+	    		((Oeuvre_collective )M.get(key)).setResumes(Resumes);
+	    		
+	    	}
+	    	else if(parts[0] == "Livre") {
+	    		String titre = parts[1];
+	    		String type = parts[2];
+	    		String url = parts[3];
+	    		Auteur auteur = MapAuteurs.get(Integer.parseInt(parts[4]));
+	    		String Resume = parts[5];
+	    		ArrayList<String> Chapitres = new ArrayList<String>();
+	    		parts[6]= parts[6].replace("[", "").replace("]", "");
+   	    	 	String[] Temp = parts[6].split(",");
+   	    	 	for(String s : Temp) {
+   	    	 		Chapitres.add(s);
+   	    	 		}
+   	    	 	ArrayList<Integer> CritiquesId = new ArrayList<Integer>();
+	    		parts[7]= parts[7].replace("[", "").replace("]", "");
+	    	 	Temp = parts[7].split(",");
+	    	 	for(String s : Temp) {
+	    	 		CritiquesId.add(Integer.parseInt(s));
+	    	 	}
+	    	 	ArrayList<String> Domaines = new ArrayList<String>();
+	    		parts[8]= parts[8].replace("[", "").replace("]", "");
+   	    	 	Temp = parts[8].split(",");
+   	    	 	for(String s : Temp) {
+   	    	 		Domaines.add(s);
+   	    	 	}
+   	    	 	long key = Long.parseLong(parts[9]);
+   	    	 	M.put(key, new Livre(key, titre, url, Resume));
+   	    	 	
+   	    	 	for(long k : CritiquesId ) {
+	    			M.get(key).addCritique(MapCritiques.get(k));
+	    		}
+   	    	 	((Livre)M.get(key)).setAuteur(auteur);
+   	    	 	((Livre)M.get(key)).setChapitres(Chapitres);
+   	    	 	((Livre)M.get(key)).setDomaines(Domaines);
+	    		
+	    		
+	    	}
+	    	else {
+	    		System.out.println("Erreur des oeuvres ne sont ni des livres ni des oeuvres collectives");
+	    	}}
+	} catch (FileNotFoundException e) {
+	    e.printStackTrace();
+	} catch (IOException e) {
+	    e.printStackTrace();
+	} finally {
+	    try {
+	        if (reader != null) {
+	            reader.close();
+	        }
+	    } catch (IOException e) {
+	    }
+	}
+	return M;
+}
+
 
 public static void saveDatabase() throws FileNotFoundException, UnsupportedEncodingException {
 	HashMap<Integer,Personne> DataPersonne = new HashMap<Integer, Personne>();
@@ -312,8 +470,11 @@ public static void retrieveDatabase() {
 }
 	
 public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
-	saveDatabase();
-	retrieveDatabase();
+	//saveDatabase();
+	//retrieveDatabase();
+	Livre l = new Livre(0101, "titutlo", "uRL","resume");
+	Oeuvre oeuvre = l;
+	
 	
 }
 
