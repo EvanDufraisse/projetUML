@@ -17,7 +17,7 @@ public abstract class  Oeuvre {
 		super();
 		this.reference = reference;
 		this.titre = titre;
-		URL = uRL;
+		this.URL = uRL;
 	}
 
 	public String getTitre() {

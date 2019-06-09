@@ -6,9 +6,6 @@ public class Auteur {
 
 	private ArrayList<String> domaines;
 	private Personne personne;
-	
-	
-	
 
 	public Auteur(ArrayList<String> domaines, Personne personne) {
 		this.domaines = domaines;
