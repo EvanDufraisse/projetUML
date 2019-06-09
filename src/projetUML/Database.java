@@ -95,7 +95,7 @@ public class Database {
     	    		values.add(parts[i]);
     	    	}
     	    	int key = Integer.parseInt(parts[0]);
-    	    	M.put(key, new Auteur(values,data.get(key)));
+    	    	M.put(key, new Auteur(new ArrayList<String>(),data.get(key)));
     	    }
     	} catch (FileNotFoundException e) {
     	    e.printStackTrace();
@@ -125,15 +125,17 @@ public class Database {
     	    while ((text = reader.readLine()) != null) {
     	    	String[] parts = text.split(";");
     	    	ArrayList<Integer> values = new ArrayList<Integer>();
+    	    	ArrayList<Oeuvre> listeOeuvres = new ArrayList<Oeuvre>();
+
     	    	 parts[1]= parts[1].replace("[", "").replace("]", "");
     	    	 String[] Temp = parts[1].split(",");
+    	    	 if(Temp.length >1) {
     	    	for(String s : Temp) {
     	    		values.add(Integer.parseInt(s));
     	    	}
-    	    	ArrayList<Oeuvre> listeOeuvres = new ArrayList<Oeuvre>();
     	    	for(int i : values) {
     	    		listeOeuvres.add(dataOeuvres.get(i));
-    	    	}
+    	    	}}
     	    	int key = Integer.parseInt(parts[0]);
     	    	M.put(key, new Correcteur(listeOeuvres,data.get(key)));
     	    }

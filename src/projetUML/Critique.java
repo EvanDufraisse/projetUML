@@ -18,13 +18,19 @@ public class Critique{
 	public Critique(ArrayList<String> domaines, Personne personne) {
 		this.domaines = domaines;
 		this.personne = personne;
+		this.ref = new ArrayList<Integer>();
 	}
 	public Critique(String name, String prenom, String adresse, int id) {
 		this.personne = new Personne(name, prenom, adresse, id);
+		this.ref = new ArrayList<Integer>();
+		this.domaines = new ArrayList<String>();
+
 	}
 	public Critique(String name, String prenom, String adresse, int id, ArrayList<String> domaines) {
 		this.personne = new Personne(name, prenom, adresse, id);
 		this.domaines = domaines;
+		this.ref = new ArrayList<Integer>();
+
 	}
 	public ArrayList<String> getDomaines() {
 		return this.domaines;

@@ -35,6 +35,8 @@ public class MaisonEdition {
 	}
 	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
 		MaisonEdition Maison = new MaisonEdition();
+		Set<Integer> s = Maison.DataAuteurs.keySet();
+		System.out.println(s.size() + " Auteurs ont été importés");
 		
 		boolean loop = true;
 		while(loop == true) {
@@ -54,19 +56,7 @@ public class MaisonEdition {
 				Maison.creerUneOeuvre();
 				break;
 			case 3:
-				System.out.println("### Personnes disponibles: ###");
-				Set<Integer> sPersonnes = Maison.DataPersonnes.keySet();
-				Iterator<Integer> itPersonnes = sPersonnes.iterator();
-				while(itPersonnes.hasNext()) {
-					Personne p = Maison.DataPersonnes.get(itPersonnes.next());
-					System.out.println(p.getId() + " "+ p.getPrenom() + " " + p.getName());}
-				System.out.println("### Fin de la liste des Personnes ###");
-				System.out.println("Choisir l'Id de la personne que vous souhaiter ajouter en tant qu'Auteur");
-				keyboard = new Scanner(System.in);
-				int id = keyboard.nextInt();
-				Maison.DataAuteurs.put(id,new Auteur(new ArrayList<String>(),Maison.DataPersonnes.get(id)));
-				System.out.print(Maison.DataAuteurs.get(id).getPersonne().getPrenom());
-				System.out.println(" a bien été ajouté à la liste d'auteurs");
+				Maison.definirFonction();
 				break;
 			case 4:
 				System.out.println("Enregistrement en cours...");
@@ -76,15 +66,53 @@ public class MaisonEdition {
 				Maison.database.saveCorrecteur(Maison.DataCorrecteurs, "correcteurs.txt");
 				Maison.database.saveOeuvres(Maison.DataOeuvre, "oeuvres.txt");
 				loop = false;
+				System.out.println("Enregistrement des modifications effectué");
+			case 5:
+				loop = false;
+				break;
 
 			default:
 				break;
 			}
 			}
-		System.out.println("Enregistrement des modifications effectué");
 		System.out.println("Au revoir !");
 		}
 	
+	private void definirFonction() {
+		System.out.println("Quelle fonction souhaitez vous attribuer ?");
+		System.out.println("1) Auteur");
+		System.out.println("2) Correcteur");
+		System.out.println("3) Critique");
+		Scanner keyboard = new Scanner(System.in);
+		int i = keyboard.nextInt();
+		System.out.println("### Personnes disponibles: ###");
+		Set<Integer> sPersonnes = this.DataPersonnes.keySet();
+		Iterator<Integer> itPersonnes = sPersonnes.iterator();
+		while(itPersonnes.hasNext()) {
+			Personne p = this.DataPersonnes.get(itPersonnes.next());
+			System.out.println(p.getId() + " "+ p.getPrenom() + " " + p.getName());}
+		System.out.println("### Fin de la liste des Personnes ###");
+		System.out.println("Choisir l'Id de la personne que vous souhaiter ajouter en tant qu'Auteur");
+		keyboard = new Scanner(System.in);
+		int id = keyboard.nextInt();
+		switch (i) {
+		case 1:
+			this.DataAuteurs.put(id,new Auteur(new ArrayList<String>(),this.DataPersonnes.get(id)));
+			System.out.println(this.DataPersonnes.get(id).getPrenom()+" a bien été ajouté à la liste d'auteurs");	
+			break;
+		case 2:
+			this.DataCorrecteurs.put(id,new Correcteur(new ArrayList<Oeuvre>(), this.DataPersonnes.get(id)));
+			System.out.println(this.DataPersonnes.get(id).getPrenom()+" a bien été ajouté à la liste de correcteurs");	
+			break;
+		case 3:
+			this.DataCritique.put(id,new Critique(new ArrayList<String>(), this.DataPersonnes.get(id)));
+			System.out.println(this.DataPersonnes.get(id).getPrenom()+" a bien été ajouté à la liste de Critiques");
+			break;
+		}
+		System.out.println("Retour au menu principal");
+
+			
+	}
 	public void creerUnePersonne() {
 		HashMap<Integer, Personne> M;
 		M = this.DataPersonnes;
@@ -133,7 +161,7 @@ public class MaisonEdition {
 			Oeuvre_collective oeuvre = new Oeuvre_collective(reference, titre, uRL);
 			int str  = 0;
 			Set<Integer> sAuteurs = this.DataAuteurs.keySet();
-			Iterator<Integer> itAuteurs = s.iterator();
+			Iterator<Integer> itAuteurs = sAuteurs.iterator();
 			System.out.println("Auteurs disponibles:");
 			while(itAuteurs.hasNext()) {
 				Auteur a = this.DataAuteurs.get(itAuteurs.next());
@@ -155,7 +183,7 @@ public class MaisonEdition {
 			String resume = keyboard.next();
 			Livre oeuvre = new Livre(reference, titre, uRL, resume);
 			Set<Integer> sAuteurs = this.DataAuteurs.keySet();
-			Iterator<Integer> itAuteurs = s.iterator();
+			Iterator<Integer> itAuteurs = sAuteurs.iterator();
 			System.out.println("Auteurs disponibles:");
 			while(itAuteurs.hasNext()) {
 				Auteur a = this.DataAuteurs.get(itAuteurs.next());

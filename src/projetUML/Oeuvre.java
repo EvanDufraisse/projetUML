@@ -18,6 +18,9 @@ public abstract class  Oeuvre {
 		this.reference = reference;
 		this.titre = titre;
 		URL = uRL;
+		this.chapitres = new ArrayList<String>();
+		this.domaines = new ArrayList<String>();
+		this.critiques = new ArrayList<Critique>();
 	}
 
 	public String getTitre() {
