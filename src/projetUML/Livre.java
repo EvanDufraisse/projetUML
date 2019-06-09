@@ -21,4 +21,5 @@ public class Livre extends Oeuvre {
 	public Auteur getAuteur() {
 		return this.auteur;
 	}
+
 }
