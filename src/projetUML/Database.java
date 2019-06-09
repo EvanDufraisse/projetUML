@@ -275,7 +275,9 @@ public void saveOeuvres(HashMap<Long, Oeuvre> M, String filename) throws FileNot
 	Iterator<Long> it = s.iterator();
 	PrintWriter writer = new PrintWriter(PATH+"oeuvres.txt", "UTF-8");
 	while(it.hasNext()) {
+		System.out.println("CurrentKey equals");
 		Long currentkey = it.next();
+		System.out.println(currentkey);
 		Oeuvre oeuvre = M.get(currentkey);
 		String str = "";
 		if(oeuvre instanceof Oeuvre_collective ) {
@@ -283,7 +285,7 @@ public void saveOeuvres(HashMap<Long, Oeuvre> M, String filename) throws FileNot
 			str = str +"Collective;"+o.getTitre()+";"+o.getType()+";"+o.getURL()+";";
 			Auteur[] arrayAuteurs = o.getAuteurs().toArray(new Auteur[o.getAuteurs().size()]);
 			Integer[] arrayIdAuteurs = new Integer[o.getAuteurs().size()];
-			for(int k=0; k<o.getAuteurs().size();k++) {
+			for(int k=0; k<arrayAuteurs.length;k++) {
 				arrayIdAuteurs[k] = arrayAuteurs[k].getPersonne().getId();
 			}
 			String[] arrayChapitres = o.getChapitres().toArray(new String[o.getChapitres().size()]);
@@ -328,7 +330,7 @@ public static HashMap<Long, Oeuvre> databaseLoadOeuvres(HashMap<Integer,Critique
 
 	    while ((text = reader.readLine()) != null) {
 	    	String[] parts = text.split(";");
-	    	if(parts[0] == "Collective") {
+	    	if(parts[0].length() == 10) {
 	    		String titre = parts[1];
 	    		String type = parts[2];
 	    		String url = parts[3];
@@ -337,7 +339,7 @@ public static HashMap<Long, Oeuvre> databaseLoadOeuvres(HashMap<Integer,Critique
 	    		parts[4]= parts[4].replace("[", "").replace("]", "");
    	    	 	String[] Temp = parts[4].split(",");
    	    	 	for(String s : Temp) {
-   	    	 		AuteursId.add(Integer.parseInt(s));
+   	    	 		AuteursId.add(Integer.parseInt(s.strip()));
    	    	 	}}
 	    		ArrayList<String> Chapitres = new ArrayList<String>();
 	    		if(parts[5].length() > 2) {
@@ -378,9 +380,8 @@ public static HashMap<Long, Oeuvre> databaseLoadOeuvres(HashMap<Integer,Critique
 	    		M.get(key).setChapitres(Chapitres);
 	    		M.get(key).setDomaines(Domaines);
 	    		((Oeuvre_collective )M.get(key)).setResumes(Resumes);
-	    		return M;
 	    	}
-	    	else if(parts[0] == "Livre") {
+	    	else if(parts[0].length() == 5) {
 	    		String titre = parts[1];
 	    		String type = parts[2];
 	    		String url = parts[3];
@@ -392,21 +393,24 @@ public static HashMap<Long, Oeuvre> databaseLoadOeuvres(HashMap<Integer,Critique
    	    	 	String[] Temp = parts[6].split(",");
    	    	 	for(String s : Temp) {
    	    	 		Chapitres.add(s);
-   	    	 		}}
+   	    	 		}
+   	    	 	}
    	    	 	ArrayList<Integer> CritiquesId = new ArrayList<Integer>();
    	    	 	if(parts[7].length() > 2) {
 	    		parts[7]= parts[7].replace("[", "").replace("]", "");
 	    	 	String[] Temp = parts[7].split(",");
 	    	 	for(String s : Temp) {
 	    	 		CritiquesId.add(Integer.parseInt(s));
-	    	 	}}
+	    	 	}
+	    	 	}
 	    	 	ArrayList<String> Domaines = new ArrayList<String>();
 	    	 	if(parts[8].length() > 2) {
 	    		parts[8]= parts[8].replace("[", "").replace("]", "");
    	    	 	String[] Temp = parts[8].split(",");
    	    	 	for(String s : Temp) {
    	    	 		Domaines.add(s);
-   	    	 	}}
+   	    	 	}
+   	    	 	}
    	    	 	long key = Long.parseLong(parts[9]);
    	    	 	M.put(key, new Livre(key, titre, url, Resume));
    	    	 	
@@ -416,12 +420,12 @@ public static HashMap<Long, Oeuvre> databaseLoadOeuvres(HashMap<Integer,Critique
    	    	 	((Livre)M.get(key)).setAuteur(auteur);
    	    	 	((Livre)M.get(key)).setChapitres(Chapitres);
    	    	 	((Livre)M.get(key)).setDomaines(Domaines);
-   	    	 	return M;
 	    		
 	    	}
 	    	else {
 	    		System.out.println("Erreur des oeuvres ne sont ni des livres ni des oeuvres collectives");
-	    	}}
+	    	}return M;
+}
 	} catch (FileNotFoundException e) {
 	    e.printStackTrace();
 	} catch (IOException e) {
