@@ -54,7 +54,19 @@ public class MaisonEdition {
 				Maison.creerUneOeuvre();
 				break;
 			case 3:
-				System.out.println("to be implemented");
+				System.out.println("### Personnes disponibles: ###");
+				Set<Integer> sPersonnes = Maison.DataPersonnes.keySet();
+				Iterator<Integer> itPersonnes = sPersonnes.iterator();
+				while(itPersonnes.hasNext()) {
+					Personne p = Maison.DataPersonnes.get(itPersonnes.next());
+					System.out.println(p.getId() + " "+ p.getPrenom() + " " + p.getName());}
+				System.out.println("### Fin de la liste des Personnes ###");
+				System.out.println("Choisir l'Id de la personne que vous souhaiter ajouter en tant qu'Auteur");
+				keyboard = new Scanner(System.in);
+				int id = keyboard.nextInt();
+				Maison.DataAuteurs.put(id,new Auteur(new ArrayList<String>(),Maison.DataPersonnes.get(id)));
+				System.out.print(Maison.DataAuteurs.get(id).getPersonne().getPrenom());
+				System.out.println(" a bien été ajouté à la liste d'auteurs");
 				break;
 			case 4:
 				System.out.println("Enregistrement en cours...");
@@ -122,16 +134,21 @@ public class MaisonEdition {
 			int str  = 0;
 			Set<Integer> sAuteurs = this.DataAuteurs.keySet();
 			Iterator<Integer> itAuteurs = s.iterator();
+			System.out.println("Auteurs disponibles:");
 			while(itAuteurs.hasNext()) {
 				Auteur a = this.DataAuteurs.get(itAuteurs.next());
 				System.out.println(a.getPersonne().getId() + " "+ a.getPersonne().getPrenom() + " " + a.getPersonne().getName());}
+			System.out.println("Fin de la liste des auteurs");
 			while(str != -1) {
 			System.out.println("Donner un Id d'auteur ou -1 pour terminer le processus:");
 			str = keyboard.nextInt();
 			if(str != -1) {
 			oeuvre.ajouterAuteur(this.DataAuteurs.get(str));}
 			
-		}}
+			
+		}
+			this.DataOeuvre.put(reference, oeuvre);
+			}
 		else if(choix == 2) {
 			System.out.println("Veuillez entrer le résumé de l'oeuvre");
 			keyboard = new Scanner(System.in);
@@ -139,13 +156,16 @@ public class MaisonEdition {
 			Livre oeuvre = new Livre(reference, titre, uRL, resume);
 			Set<Integer> sAuteurs = this.DataAuteurs.keySet();
 			Iterator<Integer> itAuteurs = s.iterator();
+			System.out.println("Auteurs disponibles:");
 			while(itAuteurs.hasNext()) {
 				Auteur a = this.DataAuteurs.get(itAuteurs.next());
 				System.out.println(a.getPersonne().getId() + " "+ a.getPersonne().getPrenom() + " " + a.getPersonne().getName());}
+			System.out.println("Fin de la liste des auteurs");
 			System.out.println("Veuillez entrer l'id de l'auteur de l'oeuvre");
 			keyboard = new Scanner(System.in);
 			int id = keyboard.nextInt();
 			oeuvre.setAuteur(this.DataAuteurs.get(id));
+			this.DataOeuvre.put(reference, oeuvre);
 		}
 		else {
 			System.out.println("Choix d'option non-existant");

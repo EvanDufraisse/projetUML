@@ -83,7 +83,6 @@ public class Database {
 		HashMap<Integer, Auteur> M = new HashMap<Integer, Auteur>();
     	File file = new File(PATH+"auteurs.txt");
     	BufferedReader reader = null;
-
     	try {
     	    reader = new BufferedReader(new FileReader(file));
     	    String text = null;
@@ -268,6 +267,7 @@ public void saveCorrecteur(HashMap<Integer, Correcteur> M, String pathName) thro
 public void saveOeuvres(HashMap<Long, Oeuvre> M, String filename) throws FileNotFoundException, UnsupportedEncodingException {
 	Set<Long> s = M.keySet();
 	Iterator<Long> it = s.iterator();
+	PrintWriter writer = new PrintWriter(PATH+"oeuvres.txt", "UTF-8");
 	while(it.hasNext()) {
 		Long currentkey = it.next();
 		Oeuvre oeuvre = M.get(currentkey);
@@ -293,7 +293,7 @@ public void saveOeuvres(HashMap<Long, Oeuvre> M, String filename) throws FileNot
 					";"+Arrays.toString(arrayResumes)+";"+o.getReference();
 		}
 		else if(oeuvre instanceof Livre) {
-			Livre o = (Livre) oeuvre;
+			Livre o = ((Livre) oeuvre);
 			str = str +"Livre;"+o.getTitre()+";"+o.getType()+";"+o.getURL()+";"+o.getAuteur().getPersonne().getId()+";";
 			String[] arrayChapitres = o.getChapitres().toArray(new String[o.getChapitres().size()]);
 			Critique[] arrayCritiques = o.getCritiques().toArray(new Critique[o.getCritiques().size()]);
@@ -302,13 +302,13 @@ public void saveOeuvres(HashMap<Long, Oeuvre> M, String filename) throws FileNot
 				arrayIdCritiques[k] = arrayCritiques[k].getPersonne().getId();
 			}
 			String[] arrayDomaines = o.getDomaines().toArray(new String[o.getDomaines().size()]);
-			str+= o.getResume() +";";
-			str = str + Arrays.toString(arrayChapitres)+";"+Arrays.toString(arrayIdCritiques)+";"+Arrays.toString(arrayDomaines)+
-					";"+o.getReference();
+			str = str + o.getResume() +";";
+			str = str + Arrays.toString(arrayChapitres)+";"+Arrays.toString(arrayIdCritiques)+";"+Arrays.toString(arrayDomaines)+";"+o.getReference();
 		}
-		PrintWriter writer = new PrintWriter(PATH+"correcteurs.txt", "UTF-8");
+		System.out.println(str);
 		writer.println(str);
 	}
+	writer.close();
 }
 
 public static HashMap<Long, Oeuvre> databaseLoadOeuvres(HashMap<Integer,Critique> MapCritiques, HashMap<Integer, Auteur> MapAuteurs) {
