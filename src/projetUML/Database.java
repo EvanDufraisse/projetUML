@@ -266,7 +266,7 @@ public void saveCorrecteur(HashMap<Integer, Correcteur> M, String pathName) thro
 	writer.close();}	
 	
 
-public static void testSaveDatabase() throws FileNotFoundException, UnsupportedEncodingException {
+public static void saveDatabase() throws FileNotFoundException, UnsupportedEncodingException {
 	HashMap<Integer,Personne> DataPersonne = new HashMap<Integer, Personne>();
 	HashMap<Integer, Auteur> DataAuteurs = new HashMap<Integer, Auteur>();
 	HashMap<Integer, Personne> DataCorrecteurs = new HashMap<Integer, Personne>();
@@ -284,12 +284,14 @@ public static void testSaveDatabase() throws FileNotFoundException, UnsupportedE
 	DataPersonne.put(p1.getId(), p1);
 	DataPersonne.put(p2.getId(), p2);
 	DataPersonne.put(p3.getId(), p3);
+	DataAuteurs.put(p1.getId(), a1);
 	Database d = new Database();
 	d.savePersonne(DataPersonne, "personnes");
+	d.saveAuteurs(DataAuteurs, "auteurs");
 	
 
 }
-public static void testRetrieveDatabase() {
+public static void retrieveDatabase() {
 	HashMap<Integer, Personne> M;
 	M = databaseLoadPersonnes("personnes");
 	Set<Integer> s = M.keySet();
@@ -298,12 +300,20 @@ public static void testRetrieveDatabase() {
 		int key = it.next();
 		System.out.println(M.get(key).getPrenom()+" "+M.get(key).getName());
 	}
+	HashMap<Integer, Auteur> Mauteurs;
+	Mauteurs = databaseLoadAuteurs("auteurs.txt",M);
+	Set<Integer> setKeyAuteurs = Mauteurs.keySet();
+	Iterator<Integer> itauteurs = setKeyAuteurs.iterator();
+	while(itauteurs.hasNext()) {
+		int key = itauteurs.next();
+		System.out.println(Mauteurs.get(key).getDomaines()+" "+Mauteurs.get(key).getPersonne().getPrenom());
+	}
 	
 }
 	
 public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
-	testSaveDatabase();
-	testRetrieveDatabase();
+	saveDatabase();
+	retrieveDatabase();
 	
 }
 

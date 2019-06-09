@@ -28,4 +28,8 @@ public class Auteur {
 	public void addDomaine(String dom) {
 		this.getDomaines().add(dom);
 	}
+	public Personne getPersonne() {
+		
+		return this.personne;
+	}
 }
