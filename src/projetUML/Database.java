@@ -132,6 +132,7 @@ public class Database {
     	    	 if(Temp.length >1) {
     	    	for(String s : Temp) {
     	    		values.add(Integer.parseInt(s));
+    	    		
     	    	}
     	    	for(int i : values) {
     	    		listeOeuvres.add(dataOeuvres.get(i));
@@ -167,17 +168,20 @@ public class Database {
     	    while ((text = reader.readLine()) != null) {
     	    	String[] parts = text.split(";");
     	    	ArrayList<Integer> values = new ArrayList<Integer>();
+    	    	if(parts[1].length() >2) {
     	    	 parts[1]= parts[1].replace("[", "").replace("]", "");
     	    	 String[] Temp = parts[1].split(",");
     	    	for(String s : Temp) {
-    	    		values.add(Integer.parseInt(s));
-    	    	}
+    	    			//values.add(Integer.parseInt(s));
+    	    	}}
+    	    	ArrayList<String> domaines = new ArrayList<String>();
+    	    	if(parts[2].length() > 2) {
     	    	parts[2]=parts[2].replace("[", "").replace("]", "");
     	    	String[] Temp2 = parts[2].split(",");
-    	    	ArrayList<String> domaines = new ArrayList<String>();
+
     	    	for(String s : Temp2) {
     	    		domaines.add(s);
-    	    	}
+    	    	}}
 
     	    	int key = Integer.parseInt(parts[0]);
     	    	M.put(key, new Critique(domaines,data.get(key),values));
@@ -329,36 +333,41 @@ public static HashMap<Long, Oeuvre> databaseLoadOeuvres(HashMap<Integer,Critique
 	    		String type = parts[2];
 	    		String url = parts[3];
 	    		ArrayList<Integer> AuteursId = new ArrayList<Integer>();
+	    		if(parts[4].length()>2) {
 	    		parts[4]= parts[4].replace("[", "").replace("]", "");
    	    	 	String[] Temp = parts[4].split(",");
    	    	 	for(String s : Temp) {
    	    	 		AuteursId.add(Integer.parseInt(s));
-   	    	 	}
+   	    	 	}}
 	    		ArrayList<String> Chapitres = new ArrayList<String>();
+	    		if(parts[5].length() > 2) {
 	    		parts[5]= parts[5].replace("[", "").replace("]", "");
-   	    	 	Temp = parts[5].split(",");
+   	    	 	String[] Temp = parts[5].split(",");
    	    	 	for(String s : Temp) {
    	    	 		Chapitres.add(s);
-   	    	 	}
+   	    	 	}}
 	    		ArrayList<Integer> CritiquesId = new ArrayList<Integer>();
-	    		parts[5]= parts[5].replace("[", "").replace("]", "");
-   	    	 	Temp = parts[5].split(",");
+	    		if(parts[6].length() > 2) {
+	    		parts[6]= parts[6].replace("[", "").replace("]", "");
+   	    	 	String[] Temp = parts[6].split(",");
    	    	 	for(String s : Temp) {
    	    	 		CritiquesId.add(Integer.parseInt(s));
-   	    	 	}
+   	    	 	}}
 	    		ArrayList<String> Domaines = new ArrayList<String>();
-	    		parts[6]= parts[6].replace("[", "").replace("]", "");
-   	    	 	Temp = parts[6].split(",");
+	    		if(parts[7].length() > 2) {
+	    		parts[7]= parts[7].replace("[", "").replace("]", "");
+   	    	 	String[] Temp = parts[7].split(",");
    	    	 	for(String s : Temp) {
    	    	 		Domaines.add(s);
-   	    	 	}
+   	    	 	}}
    	    	 	ArrayList<String> Resumes = new ArrayList<String>();
-	    		parts[7]= parts[7].replace("[", "").replace("]", "");
-	    	 	Temp = parts[7].split(",");
+   	    	 	if(parts[8].length() > 2) {
+	    		parts[8]= parts[8].replace("[", "").replace("]", "");
+	    	 	String[] Temp = parts[8].split(",");
 	    	 	for(String s : Temp) {
 	    	 		Resumes.add(s);
-	    	 	}
-   	    	 	Long key = Long.parseLong(parts[8]);
+	    	 	}}
+   	    	 	Long key = Long.parseLong(parts[9]);
 	    		M.put(key, new Oeuvre_collective(key, titre, url));
 	    		for(long k : CritiquesId ) {
 	    			M.get(key).addCritique(MapCritiques.get(k));
@@ -369,7 +378,7 @@ public static HashMap<Long, Oeuvre> databaseLoadOeuvres(HashMap<Integer,Critique
 	    		M.get(key).setChapitres(Chapitres);
 	    		M.get(key).setDomaines(Domaines);
 	    		((Oeuvre_collective )M.get(key)).setResumes(Resumes);
-	    		
+	    		return M;
 	    	}
 	    	else if(parts[0] == "Livre") {
 	    		String titre = parts[1];
@@ -378,23 +387,26 @@ public static HashMap<Long, Oeuvre> databaseLoadOeuvres(HashMap<Integer,Critique
 	    		Auteur auteur = MapAuteurs.get(Integer.parseInt(parts[4]));
 	    		String Resume = parts[5];
 	    		ArrayList<String> Chapitres = new ArrayList<String>();
+	    		if(parts[6].length() > 2) {
 	    		parts[6]= parts[6].replace("[", "").replace("]", "");
    	    	 	String[] Temp = parts[6].split(",");
    	    	 	for(String s : Temp) {
    	    	 		Chapitres.add(s);
-   	    	 		}
+   	    	 		}}
    	    	 	ArrayList<Integer> CritiquesId = new ArrayList<Integer>();
+   	    	 	if(parts[7].length() > 2) {
 	    		parts[7]= parts[7].replace("[", "").replace("]", "");
-	    	 	Temp = parts[7].split(",");
+	    	 	String[] Temp = parts[7].split(",");
 	    	 	for(String s : Temp) {
 	    	 		CritiquesId.add(Integer.parseInt(s));
-	    	 	}
+	    	 	}}
 	    	 	ArrayList<String> Domaines = new ArrayList<String>();
+	    	 	if(parts[8].length() > 2) {
 	    		parts[8]= parts[8].replace("[", "").replace("]", "");
-   	    	 	Temp = parts[8].split(",");
+   	    	 	String[] Temp = parts[8].split(",");
    	    	 	for(String s : Temp) {
    	    	 		Domaines.add(s);
-   	    	 	}
+   	    	 	}}
    	    	 	long key = Long.parseLong(parts[9]);
    	    	 	M.put(key, new Livre(key, titre, url, Resume));
    	    	 	
@@ -404,7 +416,7 @@ public static HashMap<Long, Oeuvre> databaseLoadOeuvres(HashMap<Integer,Critique
    	    	 	((Livre)M.get(key)).setAuteur(auteur);
    	    	 	((Livre)M.get(key)).setChapitres(Chapitres);
    	    	 	((Livre)M.get(key)).setDomaines(Domaines);
-	    		
+   	    	 	return M;
 	    		
 	    	}
 	    	else {
@@ -423,6 +435,7 @@ public static HashMap<Long, Oeuvre> databaseLoadOeuvres(HashMap<Integer,Critique
 	    }
 	}
 	return M;
+	
 }
 
 

@@ -24,7 +24,7 @@ public class MaisonEdition {
 		this.database = new Database();
 		this.DataPersonnes = this.database.databaseLoadPersonnes("personnes.txt");
 		this.DataAuteurs = this.database.databaseLoadAuteurs("auteurs.txt", this.DataPersonnes);
-		this.DataCritique = new HashMap<Integer, Critique>();
+		this.DataCritique = this.database.databaseLoadCritiques("critiques.txt", this.DataPersonnes);
 		this.DataOeuvre = this.database.databaseLoadOeuvres(this.DataCritique, this.DataAuteurs);
 		this.DataCorrecteurs = this.database.databaseLoadCorrecteurs("correcteurs.txt", this.DataPersonnes, this.DataOeuvre);
 		this.DataIdOeuvre = new ArrayList<Integer>();

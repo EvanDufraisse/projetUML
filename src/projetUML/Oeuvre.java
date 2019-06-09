@@ -17,14 +17,10 @@ public abstract class  Oeuvre {
 		super();
 		this.reference = reference;
 		this.titre = titre;
-<<<<<<< HEAD
-		URL = uRL;
 		this.chapitres = new ArrayList<String>();
 		this.domaines = new ArrayList<String>();
 		this.critiques = new ArrayList<Critique>();
-=======
 		this.URL = uRL;
->>>>>>> master
 	}
 
 	public String getTitre() {
