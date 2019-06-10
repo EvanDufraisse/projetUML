@@ -50,10 +50,10 @@ public class MaisonEdition {
 			int i = keyboard.nextInt();
 			switch (i) {
 			case 1:
-				Maison.creerUnePersonne();
+				Maison.mettreAJourLesInfos();
 				break;
 			case 2:
-				Maison.creerUneOeuvre();
+				Maison.ajoutOeuvreCatalogue();
 				break;
 			case 3:
 				Maison.definirFonction();
@@ -113,7 +113,7 @@ public class MaisonEdition {
 
 			
 	}
-	public void creerUnePersonne() {
+	public void mettreAJourLesInfos() {
 		HashMap<Integer, Personne> M;
 		M = this.DataPersonnes;
 		Set<Integer> s = M.keySet();
@@ -139,7 +139,7 @@ public class MaisonEdition {
 		System.out.println(prenom+" "+name+" a bien été ajoutée à la base de donnée avec pour id "+id);
 		
 	}
-	public void creerUneOeuvre() {
+	public void ajoutOeuvreCatalogue() {
 		System.out.println("Titre de l'oeuvre ?");
 		Scanner keyboard = new Scanner(System.in);
 		String titre = keyboard.next();
