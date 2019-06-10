@@ -1,4 +1,4 @@
-package projetUML;
+package projet;
 
 import java.util.ArrayList;
 

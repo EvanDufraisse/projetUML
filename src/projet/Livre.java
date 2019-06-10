@@ -1,6 +1,8 @@
-package projetUML;
+package projet;
 
-
+/*
+ * 
+ */
 public class Livre extends Oeuvre {
 	public String resume;
 	public Auteur auteur;

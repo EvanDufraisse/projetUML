@@ -1,4 +1,4 @@
-package projetUML;
+package projet;
 
 public class Personne {
 	String name;
