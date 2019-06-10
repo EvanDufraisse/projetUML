@@ -146,12 +146,10 @@ public class MaisonEdition {
 		System.out.println("Url de l'oeuvre ?");
 		keyboard = new Scanner(System.in);
 		String uRL = keyboard.next();
-		Set s = this.DataOeuvre.keySet();
-		Iterator it = s.iterator();
-		long reference = 0;
-		while(it.hasNext()) {
-			reference = (long) it.next();
-		}
+		long reference = this.DataOeuvre.keySet().size();
+		System.out.println("il y'a actuellement "+ reference +"oeuvres dans la base");
+		reference = reference+1;
+		System.out.println(reference);
 		System.out.println("Souhaitez vous créer une oeuvre :");
 		System.out.println("1) Collective");
 		System.out.println("2) Livre");
@@ -198,6 +196,7 @@ public class MaisonEdition {
 		else {
 			System.out.println("Choix d'option non-existant");
 		}
+		System.out.println("Il y'a maintenant "+this.DataOeuvre.keySet().size()+" oeuvres");
 		System.out.println("Retour au menu principal");
 
 

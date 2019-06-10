@@ -46,6 +46,15 @@ public class Personne {
 		Id = id;
 	}
 	
-	
+	public static void main(String[] args) {
+		String str = "Collective;ftuydy;null;ffyg;[1, 3];[];[];[];[];2";
+		String[] parts = str.split(";");
+		System.out.println(parts[0].length());
+		String titre = parts[1];
+		String type = parts[2];
+		String url = parts[3];
+		Long key = Long.parseLong(parts[9]);
+		System.out.println(key);
+	}
 
 }

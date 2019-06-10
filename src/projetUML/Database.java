@@ -275,7 +275,6 @@ public void saveOeuvres(HashMap<Long, Oeuvre> M, String filename) throws FileNot
 	Iterator<Long> it = s.iterator();
 	PrintWriter writer = new PrintWriter(PATH+"oeuvres.txt", "UTF-8");
 	while(it.hasNext()) {
-		System.out.println("CurrentKey equals");
 		Long currentkey = it.next();
 		System.out.println(currentkey);
 		Oeuvre oeuvre = M.get(currentkey);
@@ -424,8 +423,8 @@ public static HashMap<Long, Oeuvre> databaseLoadOeuvres(HashMap<Integer,Critique
 	    	}
 	    	else {
 	    		System.out.println("Erreur des oeuvres ne sont ni des livres ni des oeuvres collectives");
-	    	}return M;
-}
+	    	}
+}return M;
 	} catch (FileNotFoundException e) {
 	    e.printStackTrace();
 	} catch (IOException e) {
