@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Correcteur{
 	
-	private ArrayList<Oeuvre> oeuvres;
+	private ArrayList<Oeuvre> oeuvres = new ArrayList();
 	private Personne personne;
 	
 	
